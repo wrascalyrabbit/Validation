@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -57,66 +57,40 @@ const ValidationTable = () => {
     rowsPerPageOptions: [5, 10, 15],
     download: false,
     print: false,
-    rowsSelected: rowSelect,
-    customSort: (data, colIndex, order) => {
-      //sort differently if mgmt_ip or timestamp
-      if (colIndex === 2) {
-        if (order === "asc") {
-          return data.sort((a, b) => {
-            const num1 = Number(
-              a.data[2]
-                .split(".")
-                .map(num => `000${num}`.slice(-3))
-                .join("")
-            );
-            const num2 = Number(
-              b.data[2]
-                .split(".")
-                .map(num => `000${num}`.slice(-3))
-                .join("")
-            );
-            return num1 > num2 ? 1 : -1;
-          });
-        } else if (order === "desc") {
-          return data.sort((a, b) => {
-            const num1 = Number(
-              a.data[2]
-                .split(".")
-                .map(num => `000${num}`.slice(-3))
-                .join("")
-            );
-            const num2 = Number(
-              b.data[2]
-                .split(".")
-                .map(num => `000${num}`.slice(-3))
-                .join("")
-            );
-            return num1 < num2 ? 1 : -1;
-          });
-        }
-      } else if (colIndex === 5) {
-        if (order === "asc") {
-          return data.sort((a, b) => {
-            return new Date(a.data[colIndex]) - new Date(b.data[colIndex]);
-          });
-        } else if (order === "desc") {
-          return data.sort((a, b) => {
-            return new Date(b.data[colIndex]) - new Date(a.data[colIndex]);
-          });
-        }
-      } else {
-        if (order === "asc") {
-          return data.sort((a, b) => {
-            return a.data[colIndex] < b.data[colIndex] ? 1 : -1;
-          });
-        } else if (order === "desc") {
-          return data.sort((a, b) => {
-            return a.data[colIndex] < b.data[colIndex] ? -1 : 1;
-          });
-        }
-      }
-    }
+    rowsSelected: rowSelect
   };
+
+  const action = key => (
+    <React.Fragment>
+      <Button
+        onClick={() => {
+          closeSnackbar(key);
+        }}
+      >
+        {"Dismiss"}
+      </Button>
+    </React.Fragment>
+  );
+
+  const handleClickVariant = (message, variant) => {
+    enqueueSnackbar(message, {
+      variant,
+      anchorOrigin: {
+        vertical: "bottom",
+        horizontal: "right"
+      },
+      action,
+      persist: true
+    });
+  };
+
+  //populates the table's data of unlocked devices or if the locked device is currently in the group
+  useEffect(() => {
+    handleClickVariant(
+      "There was an error contacting the database. Please contact administrator.",
+      "error"
+    );
+  }, []);
 
   return (
     <MuiThemeProvider theme={tableTheme}>
