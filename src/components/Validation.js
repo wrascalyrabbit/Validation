@@ -39,8 +39,8 @@ const ValidationTable = () => {
       }
     },
     {
-      name: "hostname",
-      label: "Host Name",
+      name: "Validation",
+      label: "Validation",
       options: {
         filter: true,
         sort: true
