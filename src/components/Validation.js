@@ -23,6 +23,10 @@ const tableTheme = createMuiTheme({
   }
 });
 
+const handleRunValidation = () => {
+  console.log("Testing");
+};
+
 const ValidationTable = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = React.useState([]);
@@ -118,7 +122,13 @@ const Validation = () => {
         style={{ width: 380 }}
       >
         <TextField id="device" label="Device" className={classes.device} />
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            handleRunValidation();
+          }}
+        >
           Run Validation
         </Button>
         <ValidationTable />
