@@ -7,10 +7,11 @@ import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles(theme => ({
   devices: {
-    width: 600
+    width: "100%"
   },
   button: {
-    marginTop: 25
+    marginTop: 25,
+    float: "right"
   }
 }));
 
