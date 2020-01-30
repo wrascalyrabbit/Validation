@@ -1,111 +1,25 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { SnackbarProvider, useSnackbar } from "notistack";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import MUIDataTable from "mui-datatables";
+import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles(theme => ({
-  device: {
-    margin: theme.spacing(1),
-    width: 200
+  devices: {
+    width: 600
+  },
+  button: {
+    marginTop: 25
   }
 }));
 
-const tableTheme = createMuiTheme({
-  overrides: {
-    MuiTableCell: {
-      root: {
-        padding: "0px 6px 0px 6px"
-      }
-    }
-  }
-});
-
 const handleRunValidation = () => {
   console.log("Testing");
-};
-
-const ValidationTable = () => {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [data, setData] = React.useState([]);
-  const [rowSelect, setRowSelect] = React.useState([]);
-
-  const columns = [
-    {
-      name: "id",
-      label: "ID",
-      options: {
-        filter: true,
-        sort: true,
-        display: "false"
-      }
-    },
-    {
-      name: "Validation",
-      label: "Validation",
-      options: {
-        filter: true,
-        sort: true
-      }
-    }
-  ];
-
-  const options = {
-    filter: true,
-    selectableRows: "multiple",
-    filterType: "dropdown",
-    responsive: "scrollFullHeight",
-    rowsPerPage: 10,
-    rowsPerPageOptions: [5, 10, 15],
-    download: false,
-    print: false,
-    rowsSelected: rowSelect
-  };
-
-  const action = key => (
-    <React.Fragment>
-      <Button
-        onClick={() => {
-          closeSnackbar(key);
-        }}
-      >
-        {"Dismiss"}
-      </Button>
-    </React.Fragment>
-  );
-
-  const handleClickVariant = (message, variant) => {
-    enqueueSnackbar(message, {
-      variant,
-      anchorOrigin: {
-        vertical: "bottom",
-        horizontal: "right"
-      },
-      action,
-      persist: true
-    });
-  };
-
-  //populates the table's data of unlocked devices or if the locked device is currently in the group
-  useEffect(() => {
-    handleClickVariant(
-      "There was an error contacting the database. Please contact administrator.",
-      "error"
-    );
-  }, []);
-
-  return (
-    <MuiThemeProvider theme={tableTheme}>
-      <MUIDataTable
-        title={"Select Device(s)"}
-        data={data}
-        columns={columns}
-        options={options}
-      />
-    </MuiThemeProvider>
-  );
+  //
+  // Code for submitting to validation job create and
+  // Snackbar will be for success and error messages.
+  //
 };
 
 const Validation = () => {
@@ -121,17 +35,26 @@ const Validation = () => {
         maxSnack={8}
         style={{ width: 380 }}
       >
-        <TextField id="device" label="Device" className={classes.device} />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            handleRunValidation();
-          }}
-        >
-          Run Validation
-        </Button>
-        <ValidationTable />
+        <Container maxWidth="sm">
+          <TextField
+            className={classes.devices}
+            id="filled-multiline"
+            label="Device(s)"
+            multiline
+            placeholder="LBZPOL70, ASAPOL88"
+            variant="filled"
+            onClick={() => {
+              handleRunValidation();
+            }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            Submit
+          </Button>
+        </Container>
       </SnackbarProvider>
     </div>
   );
